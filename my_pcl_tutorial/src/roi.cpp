@@ -1,0 +1,80 @@
+#include <iostream>
+#include <cmath>
+#include <vector>
+#include <ros/ros.h>
+// PCL specific includes
+#include <sensor_msgs/PointCloud2.h>
+#include <pcl_ros/point_cloud.h>
+#include <pcl_conversions/pcl_conversions.h>
+
+#include <pcl/common/common.h>
+#include <pcl/common/centroid.h>
+#include <pcl/common/transforms.h>
+#include <set>
+#include <pcl/io/pcd_io.h>
+#include <boost/format.hpp>
+#include <pcl/point_cloud.h>
+#include <pcl/point_types.h>
+#include <pcl/filters/voxel_grid.h>
+
+double ROI_theta(double x, double y);
+using namespace std;
+
+// Publish PCL data in a certain ROI
+ros::Publisher pub;
+
+double ROI_theta(double x, double y){
+    double r;
+    double theta;
+
+    r = sqrt((x*x)+(y*y));
+    theta = acos(x/r)*180/M_PI;
+    return theta;
+}
+
+void input (const sensor_msgs::PointCloud2ConstPtr& scan)
+{
+  //////Msg to pointcloud
+  pcl::PointCloud<pcl::PointXYZI>::Ptr src(new pcl::PointCloud<pcl::PointXYZI>);
+  // ptr을 통해 각각의 pointcloud들을 참조한다. 값을 복사하거나 덮어씌우거나 할 수 있다.
+  pcl::fromROSMsg(*scan, *src);
+  pcl::PointCloud<pcl::PointXYZI> src_cloud = *src;
+  
+  for(unsigned int i=0; i<src_cloud.points.size(); i++){
+      if((ROI_theta(src_cloud.points[i].x, src_cloud.points[i].y) > 90) && (ROI_theta(src_cloud.points[i].x, src_cloud.points[i].y) < 270)){
+          src_cloud.points[i].x = 0;
+          src_cloud.points[i].y = 0;
+          src_cloud.points[i].z = 0;
+      }
+      if(src_cloud.points[i].x < 0.0){
+          src_cloud.points[i].x = 0;
+          src_cloud.points[i].y = 0;
+          src_cloud.points[i].z = 0;
+      }
+  }
+
+  pcl::PCLPointCloud2 roied_cloud;
+  pcl::toPCLPointCloud2(src_cloud, roied_cloud);
+  sensor_msgs::PointCloud2 roied_output;
+  pcl_conversions::fromPCL(roied_cloud, roied_output);
+
+  roied_output.header.frame_id = "velodyne";
+  pub.publish(roied_output);
+}
+
+int main (int argc, char** argv)
+{
+  // Initialize ROS
+  ros::init (argc, argv, "roi");
+  ros::NodeHandle nh;
+
+  // Create a ROS subscriber for the input point cloud
+  ros::Subscriber sub = nh.subscribe<sensor_msgs::PointCloud2> ("/velodyne_points_voxelized", 100, input);
+
+  // Create a ROS publisher for the output point cloud
+  // pub1 = nh.advertise<sensor_msgs::PointCloud2> ("/velodyne_points", 100);
+  pub = nh.advertise<sensor_msgs::PointCloud2> ("/velodyne_points_roied", 100);
+
+  // Spin
+  ros::spin ();
+}
