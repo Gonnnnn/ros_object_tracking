@@ -24,6 +24,11 @@ PCD data -> roi node -> voxelize node -> ground_removal node -> cluster node
 /velodyne_points_obstacles && /velodyne_points_plane  
 /velodyne_points_clustered  
 
+# <b><u>*****Note!</u></b>
+## Things that should be fixed
+### cluster node
+- bounding boxes and pose estimation are not implemented yet
+- cluster node separates every cluster and pack them into a vector. But currently(2022-01-25) it only publishes the first element in the vector.
 ---
 # How to Use
 ## First, you do
@@ -64,3 +69,10 @@ https://pcl.readthedocs.io/en/latest/index.html
 https://limhyungtae.github.io/page2/  
 
 https://saint-swithins-day.tistory.com/43?category=873762  
+
+---
+
+# Developer's note
+## To-Do
+- add boundiing boxes and pose estimation modules
+- figure out how to publish every cluster

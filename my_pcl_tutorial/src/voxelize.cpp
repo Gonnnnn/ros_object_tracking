@@ -31,9 +31,7 @@ ros::Publisher pub;
 void input (const sensor_msgs::PointCloud2ConstPtr& scan)
 {
   //////Msg to pointcloud
-  // 처음에 받아줄 때 pcl::PointXYZ 형태로 받아도 되는지 확인 후 주석 지우자
   pcl::PointCloud<pcl::PointXYZI>::Ptr src(new pcl::PointCloud<pcl::PointXYZI>);
-  // ptr을 통해 각각의 pointcloud들을 참조한다. 값을 복사하거나 덮어씌우거나 할 수 있다.
   pcl::fromROSMsg(*scan, *src);
 
   pcl::PointCloud<pcl::PointXYZI>::Ptr voxelized(new pcl::PointCloud<pcl::PointXYZI>);

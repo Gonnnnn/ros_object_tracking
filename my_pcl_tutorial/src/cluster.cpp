@@ -12,7 +12,6 @@
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <pcl/segmentation/extract_clusters.h>
-#include <pcl/io/pcd_io.h>
 
 // the ones below were being included in the src file i read through
 // i didn't look into them but apparently they dont have to be included
@@ -22,11 +21,12 @@
 // #include <pcl/filters/extract_indices.h>
 // #include <pcl/kdtree/kdtree.h>
 
-#include <pcl/common/common.h>
+// #include <pcl/io/pcd_io.h>
+// #include <pcl/common/common.h>
 // #include <pcl/common/centroid.h>
 // #include <pcl/common/transforms.h>
 // #include <set>
-#include <boost/format.hpp>
+// #include <boost/format.hpp>
 
 // #include <pcl/filters/passthrough.h>
 // #include <pcl/sample_consensus/ransac.h>
@@ -45,9 +45,7 @@ void input (const sensor_msgs::PointCloud2ConstPtr& scan)
 {
   //////Msg to pointcloud
   pcl::PointCloud<pcl::PointXYZI>::Ptr src(new pcl::PointCloud<pcl::PointXYZI>);
-  // ptr을 통해 각각의 pointcloud들을 참조한다. 값을 복사하거나 덮어씌우거나 할 수 있다.
   pcl::fromROSMsg(*scan, *src);
-  // pcl::PointCloud<pcl::PointXYZI> src_cloud = *src;
 
 ///////////////////////clustering 시작///////////////////////
 

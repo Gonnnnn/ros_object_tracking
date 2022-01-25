@@ -32,7 +32,6 @@ void input (const sensor_msgs::PointCloud2ConstPtr& scan)
 {
   //////Msg to pointcloud
   pcl::PointCloud<pcl::PointXYZI>::Ptr src(new pcl::PointCloud<pcl::PointXYZI>);
-  // ptr을 통해 각각의 pointcloud들을 참조한다. 값을 복사하거나 덮어씌우거나 할 수 있다.
   pcl::fromROSMsg(*scan, *src);
   pcl::PointCloud<pcl::PointXYZI> src_cloud = *src;
   
@@ -68,7 +67,6 @@ int main (int argc, char** argv)
   ros::Subscriber sub = nh.subscribe<sensor_msgs::PointCloud2> ("/velodyne_points", 100, input);
   // /velodyne_points
   // Create a ROS publisher for the output point cloud
-  // pub1 = nh.advertise<sensor_msgs::PointCloud2> ("/velodyne_points", 100);
   pub = nh.advertise<sensor_msgs::PointCloud2> ("/velodyne_points_roied", 100);
   
 

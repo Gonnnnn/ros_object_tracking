@@ -24,7 +24,6 @@ ros::Publisher pub_plane;
 std::pair<pcl::PointCloud<pcl::PointXYZI>::Ptr, pcl::PointCloud<pcl::PointXYZI>::Ptr> SeparateClouds(pcl::PointIndices::Ptr inliers, pcl::PointCloud<pcl::PointXYZI>::Ptr cloud) 
 {
   // TODO: Create two new point clouds, one cloud with obstacles and other with segmented plane
-    
     pcl::PointCloud<pcl::PointXYZI>::Ptr obstCloud (new pcl::PointCloud<pcl::PointXYZI>);
     pcl::PointCloud<pcl::PointXYZI>::Ptr planeCloud (new pcl::PointCloud<pcl::PointXYZI>);
 
@@ -39,7 +38,7 @@ std::pair<pcl::PointCloud<pcl::PointXYZI>::Ptr, pcl::PointCloud<pcl::PointXYZI>:
     // inliers
     extract.setIndices (inliers);
     extract.setNegative (true);
-    // this way, all the points that are not the inliers are kept and it'll be assigned to obstCloud will 
+    // this way, all the points that are not the inliers are kept and it'll be assigned to obstCloud
     extract.filter (*obstCloud);
 
     std::pair<pcl::PointCloud<pcl::PointXYZI>::Ptr, pcl::PointCloud<pcl::PointXYZI>::Ptr> segResult(obstCloud, planeCloud);
@@ -54,9 +53,7 @@ void input (const sensor_msgs::PointCloud2ConstPtr& scan)
 
     //////Msg to pointcloud
     pcl::PointCloud<pcl::PointXYZI>::Ptr src (new pcl::PointCloud<pcl::PointXYZI>);
-    // ptr을 통해 각각의 pointcloud들을 참조한다. 값을 복사하거나 덮어씌우거나 할 수 있다.
     pcl::fromROSMsg(*scan, *src);
-    // pcl::PointCloud<pcl::PointXYZI> src_cloud = *src;
 
     pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients);
     pcl::PointIndices::Ptr inliers (new pcl::PointIndices);
