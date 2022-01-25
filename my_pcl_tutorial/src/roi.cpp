@@ -1,21 +1,17 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
+
+// ros
 #include <ros/ros.h>
-// PCL specific includes
 #include <sensor_msgs/PointCloud2.h>
 #include <pcl_ros/point_cloud.h>
 #include <pcl_conversions/pcl_conversions.h>
 
-#include <pcl/common/common.h>
-#include <pcl/common/centroid.h>
-#include <pcl/common/transforms.h>
-#include <set>
+// PCL specific includes
 #include <pcl/io/pcd_io.h>
-#include <boost/format.hpp>
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
-#include <pcl/filters/voxel_grid.h>
 
 double ROI_theta(double x, double y);
 using namespace std;
@@ -69,11 +65,12 @@ int main (int argc, char** argv)
   ros::NodeHandle nh;
 
   // Create a ROS subscriber for the input point cloud
-  ros::Subscriber sub = nh.subscribe<sensor_msgs::PointCloud2> ("/velodyne_points_voxelized", 100, input);
-
+  ros::Subscriber sub = nh.subscribe<sensor_msgs::PointCloud2> ("/velodyne_points", 100, input);
+  // /velodyne_points
   // Create a ROS publisher for the output point cloud
   // pub1 = nh.advertise<sensor_msgs::PointCloud2> ("/velodyne_points", 100);
   pub = nh.advertise<sensor_msgs::PointCloud2> ("/velodyne_points_roied", 100);
+  
 
   // Spin
   ros::spin ();
