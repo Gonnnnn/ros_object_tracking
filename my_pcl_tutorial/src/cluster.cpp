@@ -71,17 +71,6 @@ void input (const sensor_msgs::PointCloud2ConstPtr& scan)
   ec.setInputCloud(src);
   ec.extract(cluster_indices);
 
-
-  // pcl::PointCloud<pcl::PointXYZI>::Ptr clusters (new pcl::PointCloud<pcl::PointXYZI>);
-  // for (pcl::PointIndices getIndices: cluster_indices)
-  //   {
-  //       for (int index : getIndices.indices)
-  //           clusters->points.push_back(src->points[index]);
-  //   }
-  //   clusters->width = clusters->points.size();
-  //   clusters->height = 1;
-  //   clusters->is_dense = true;
-
   std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> clusters;
   for (pcl::PointIndices getIndices: cluster_indices)
     {
@@ -105,28 +94,8 @@ void input (const sensor_msgs::PointCloud2ConstPtr& scan)
         // push the cloud into clusters(a vector containing pcl::PointCloud<PointT>::Ptr)
         clusters.push_back(cloudCluster);
     }
-
-  // 위 과정 후 아래 for문에서는 cluster_indices를 가지고 뭘 한다.
-  // iterator을 선언해서 처음부터 끝까지 쭉 돌아주며 특정 작업을 하는데
-  // 클래스(struct인지는 나도 모르지만.. 아마 클래스겠지) 내부 구조를 모르다보니 뭐 하는거지 잘은 모르겠다.
-  // 확실한 것은 clutering결과를 total_cloud에 넣어주는 것
-
-  // pcl::PointCloud<pcl::PointXYZI> total_cloud;
-  // // iterator 선언 후 첫 원소부터 끝 원소까지 훑기
-  // // 예제 소스는 ++it이었다. 왜 그런지는 모르겠다 아직.
-  // int j = 0; // intensity에만 들어가는 변수. 왜 1씩 더해지며 들어가는지는 잘 모름
-  // for(std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin(); it != cluster_indices.end(); it++){
-  //     for(std::vector<int>::const_iterator pit = it->indices.begin(); pit != it->indices.end(); pit++){
-  //         pcl::PointXYZ point1 = src->points[*pit];
-  //         pcl::PointXYZI point2;
-  //         point2.x = point1.x, point2.y = point1.y, point2.z = point1.z;
-  //         point2.intensity = (float)(j+1);
-  //         total_cloud.push_back(point2);
-  //     }
-  //     j++;
-  // }
-
 ///////////////////////clustering 끝///////////////////////
+
   try { 
     // 예외가 발생하면 예외를 던지는 영역
     if (clusters.size() == 0) throw clusters;
