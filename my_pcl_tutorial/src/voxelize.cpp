@@ -14,14 +14,6 @@
 #include <pcl/point_types.h>
 #include <pcl/filters/voxel_grid.h>
 
-// the ones below were being included in the src file i read through
-// i didn't look into them but apparently they dont have to be included
-
-// #include <pcl/common/common.h>
-// #include <pcl/common/centroid.h>
-// #include <pcl/common/transforms.h>
-// #include <set>
-// #include <boost/format.hpp>
 
 using namespace std;
 

@@ -1,5 +1,6 @@
 # ros_object_tracking
 ## Ros Packages for object(vehicles) tracking  
+![screenshot1](./img/screenshot1.png)
 ---
 # Version
 ## OS
@@ -11,7 +12,7 @@ Ros1-Melodic
 
 # Description
 ## Diagram
-![rosgraph1](./img/rosgraph1.png)
+![rosgraph2](./img/rosgraph2.png)
 
 PCD data -> roi node -> voxelize node -> ground_removal node -> cluster node    
 
@@ -23,29 +24,36 @@ PCD data -> roi node -> voxelize node -> ground_removal node -> cluster node
 /velodyne_points_voxelized  
 /velodyne_points_obstacles && /velodyne_points_plane  
 /velodyne_points_clustered  
+/box_bounded
 
 # <b><u>*****Note!</u></b>
 ## Things that should be fixed
 ### cluster node
-- bounding boxes and pose estimation are not implemented yet
-- cluster node separates every cluster and pack them into a vector. But currently(2022-01-25) it only publishes the first element in the vector.
+- cluster node separates every cluster and pack them into a vector. But currently(2022-01-28) it only publishes the first element in the vector.
 ---
 # How to Use
 ## First, you do
+    cd ${your_workspace}/src    
     git clone https://github.com/Gonnnnn/Ros_Project.git
 
-And then move the "my_pcl_tutorial" to src directory under your workspace(commonly, it's ~/catkin_ws)  
-After that, Build it!
+    Build Dependencies in order
+    catkin_make --only-pkg-with-deps common_lib
+    catkin_make --only-pkg-with-deps object_builders_lib
+    catkin_make --only-pkg-with-deps my_pcl_tutorial
 
-## Run each node
+## Run
 Activate roscore  
 
     roscore
 
-Run each node
-roi -> voxelize -> ground_removal -> cluster
+You could either run each node
+(roi -> voxelize -> ground_removal -> cluster)
 
-    rosrun my_pcl_tutorial ${node_name}
+        rosrun my_pcl_tutorial ${node_name}
+
+Or launch a launch file
+
+        roslaunch my_pcl_tutorial player.launch
 
 Go to the directory where your rosbag files are and run your rosbag file
 
@@ -57,7 +65,7 @@ Check them out on rviz
     rviz
 
 ## If it doesn't work?
-welp.. :D
+Pls lemme know if it doesn't work. It could not since I'm not really good at ROS and C++ yet
 
 ---
 
@@ -70,9 +78,13 @@ https://limhyungtae.github.io/page2/
 
 https://saint-swithins-day.tistory.com/43?category=873762  
 
+## Open Sources
+https://github.com/LidarPerception/common_lib
+
+https://github.com/LidarPerception/object_builders_lib
+
 ---
 
 # Developer's note
 ## To-Do
-- add boundiing boxes and pose estimation modules
 - figure out how to publish every cluster
